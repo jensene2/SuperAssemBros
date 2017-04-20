@@ -70,19 +70,23 @@ asm_main:
 			push dword [x]
 			push dword [y]
 			call getPosition
+
+			; Clean stack.
 			pop ebx
 			pop ebx
 
 			; The exit is eax == 69
 			cmp eax, 69
-			jnz continue
+			jz finish
+			jmp continue
 	;***************CODE ENDS HERE*********
 
-	; Redraw the screen
-	mov eax, clear
-	call print_string
-	mov eax, text
-	call print_string
+	finish:
+		; Redraw the screen
+		mov eax, clear
+		call print_string
+		mov eax, text
+		call print_string
 
 	popa
 	mov     eax, 0            ; return back to C
