@@ -163,10 +163,11 @@ load:
 
 ; getPosition returns the character at the position passed in via the stack.
 getPosition:
-	enter 0, 0
+	push ebp
+	mov ebp, esp
 
-	mov eax, [ebp+4] ; X value passed in.
-	mov ebx, [ebp+8] ; Y value passed in.
+	mov eax, [ebp+8] ; X value passed in.
+	mov ebx, [ebp+12] ; Y value passed in.
 	mov edx, 0
 	imul ebx, [cols]
 
@@ -178,7 +179,7 @@ getPosition:
 	mov eax, 0
 	mov al, cl
 
-	leave
+	pop ebp
 	ret
 
 
