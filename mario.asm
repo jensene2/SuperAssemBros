@@ -40,18 +40,23 @@ asm_main:
 	mov eax, cc
 	call load	;load the file into text
 	call update ;update the file with the location
-	mov eax, text
-	call print_string
 
-	mov ecx, 20
 	continue:
+		mov eax, text
+		call print_string
+
 		call movement
+
+		; Print what is where mario attempted to move to.
+		push [x]
+		push [y]
+		call getPosition
+		call print_string
+
 		call update
 
 		; Redraw the screen
 		mov eax, clear
-		call print_string
-		mov eax, text
 		call print_string
 
 		; Check if at the exit.
@@ -155,8 +160,24 @@ load:
 	pop eax
 	ret
 
-;
+; getPosition returns the character at the position passed in via the stack.
 getPosition:
+	enter 0, 0
+
+	mov eax, [ebp+4] ; X value passed in.
+	mov ebx, [ebp+8] ; Y value passed in.
+	mov edx, 0
+	imul ebx, [cols]
+
+	add eax, ebx
+
+	mov ecx, 0
+
+	mov cl, byte [text + eax]
+	mov eax, 0
+	mov al, cl
+
+	leave
 	ret
 
 
