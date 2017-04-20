@@ -15,6 +15,8 @@ prevY dd 0
 exitX dd 0
 exitY dd 0
 
+oldCharFormat db 'The character was: %c', 10, 0
+
 rows dd 8
 cols dd 27
 ; uninitialized data is put in the .bss segment
@@ -30,6 +32,7 @@ segment .text
 	extern scanf
 	extern getchar
 	extern putchar
+	extern printf ;; REMOVE ME LATER
 asm_main:
 	enter   0,0               ; setup routine
 	pusha
@@ -51,7 +54,11 @@ asm_main:
 		push dword [x]
 		push dword [y]
 		call getPosition
-		call print_string
+		push al
+		push oldCharFormat
+		call printf
+		pop eax
+		pop eax
 		call print_nl
 
 		call update
