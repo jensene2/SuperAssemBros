@@ -53,21 +53,30 @@ asm_main:
 		; Check for a valid move. If invalid, loop again.
 		call isValidMove
 		cmp eax, 1
-		jnz continue
+		jz doMove
 
-		; Valid move. Resolve the move.
-		call update
+		; Invalid move. Move mario back to previous.
+		mov edx, [prevX]
+		mov [x], edx
+		mov edx, [prevY]
+		mov [y], edx
+		; Continue loop.
+		jmp continue
 
-		; Check if at the exit.
-		mov eax, [prevX]
-		mov ebx, [exitX]
-		cmp eax, ebx
-		jnz continue
+		doMove:
+			; Valid move. Resolve the move.
+			call update
 
-		mov eax, [prevY]
-		mov ebx, [exitY]
-		cmp eax, ebx
-		jnz continue
+			; Check if at the exit.
+			mov eax, [prevX]
+			mov ebx, [exitX]
+			cmp eax, ebx
+			jnz continue
+
+			mov eax, [prevY]
+			mov ebx, [exitY]
+			cmp eax, ebx
+			jnz continue
 	;***************CODE ENDS HERE*********
 
 	popa
