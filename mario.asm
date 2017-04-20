@@ -63,9 +63,8 @@ asm_main:
 
 		doMove:
 			; Valid move. Resolve the move.
-			call update
 
-			; Check if at the exit.
+			; First determine if that's the exit.
 			; Get the ascii value of the new position.
 			push dword [x]
 			push dword [y]
@@ -75,9 +74,13 @@ asm_main:
 			pop ebx
 			pop ebx
 
+			; Resolve the move.
+			call update
+
 			; The exit is eax == 69
 			cmp eax, 69
 			jz finish
+
 			jmp continue
 	;***************CODE ENDS HERE*********
 
