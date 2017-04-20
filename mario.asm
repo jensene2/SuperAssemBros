@@ -48,8 +48,8 @@ asm_main:
 		call movement
 
 		; Print what is where mario attempted to move to.
-		push [x]
-		push [y]
+		push dword [x]
+		push dword [y]
 		call getPosition
 		call print_string
 		call print_nl
