@@ -73,7 +73,7 @@ asm_main:
 			cmp eax, 0
 			jz skipScore
 
-			dec [score]
+			dec dword [score]
 
 			skipScore:
 
@@ -93,7 +93,8 @@ asm_main:
 			; Gold (eax == 71) adds 100 to the score.
 			cmp eax, 71
 			jnz skipScoreGain
-			add [score], 100
+
+			add dword [score], 100
 
 			skipScoreGain:
 
@@ -114,7 +115,7 @@ asm_main:
 		call print_nl
 		mov eax, scoreFormat
 		call print_string
-		mov eax, score
+		mov eax, [score]
 		call print_int
 		call print_nl
 
