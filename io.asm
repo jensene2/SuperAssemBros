@@ -15,7 +15,7 @@ canonical_off:
 	call read_stdin_termios
 	; clear canonical bit in local mode flags
 	push eax
-	mov eax, ICANON\n
+	mov eax, ICANON
 	not eax
 	and [termios+12], eax
 	pop eax
