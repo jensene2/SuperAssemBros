@@ -4,7 +4,5 @@
 *           BBB          *
 *   G                    *
 *         BBBBBBB        *
-* M   BBBBBBBBBBB        *
+* M   BBBBBBBBBBB     E  *
 **************************
-
-
