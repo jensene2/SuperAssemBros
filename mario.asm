@@ -12,8 +12,6 @@ x dd 3
 y dd 3
 prevX dd 0
 prevY dd 0
-exitX dd 0
-exitY dd 0
 
 rows dd 8
 cols dd 27
@@ -68,16 +66,23 @@ asm_main:
 			call update
 
 			; Check if at the exit.
-			mov eax, [prevX]
-			mov ebx, [exitX]
-			cmp eax, ebx
-			jnz continue
+			; Get the ascii value of the new position.
+			push dword [x]
+			push dword [y]
+			call getPosition
+			pop ebx
+			pop ebx
 
-			mov eax, [prevY]
-			mov ebx, [exitY]
-			cmp eax, ebx
+			; The exit is eax == 69
+			cmp eax, 69
 			jnz continue
 	;***************CODE ENDS HERE*********
+
+	; Redraw the screen
+	mov eax, clear
+	call print_string
+	mov eax, text
+	call print_string
 
 	popa
 	mov     eax, 0            ; return back to C
@@ -120,9 +125,6 @@ load:
 		cmp al, 'M'
 		jz Mario
 
-		cmp al, 'E'
-		jz Exit
-
 		mov edx, [prevX]; increment prevX
 		inc edx
 		mov [prevX], edx
@@ -143,13 +145,6 @@ load:
 		mov [x], edx
 		mov edx, [prevY]
 		mov [y], edx
-		jmp save
-
-	Exit:
-		mov edx, [prevX]
-		mov [exitX], edx
-		mov edx, [prevY]
-		mov [exitY], edx
 		jmp save
 
 	save:
@@ -186,9 +181,13 @@ isValidMove:
 	; Check if the new position is valid.
 	;	Valid options include
 	;		- 32 = Space
+	;		- 69 = 'E'
 	;		- 71 = 'G'
 
 	cmp eax, 32
+	jz valid
+
+	cmp eax, 69
 	jz valid
 
 	cmp eax, 71
