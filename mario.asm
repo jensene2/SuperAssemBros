@@ -12,6 +12,8 @@ x dd 3
 y dd 3
 prevX dd 0
 prevY dd 0
+exitX dd 0
+exitY dd 0
 
 rows dd 8
 cols dd 27
@@ -46,12 +48,22 @@ asm_main:
 		call movement
 		call update
 
-		; Redraw thre screen
+		; Redraw the screen
 		mov eax, clear
 		call print_string
 		mov eax, text
 		call print_string
-	loop continue
+
+		; Check if at the exit.
+		mov eax, [prevX]
+		mov ebx, [exitX]
+		cmp eax, ebx
+		jnz continue
+
+		mov eax, [prevY]
+		mov ebx, [exitY]
+		cmp eax, ebx
+		jnz continue
 	;***************CODE ENDS HERE*********
 
 	popa
@@ -79,8 +91,8 @@ load:
 	mov [esp], eax; mov the file pointer to param 1
 	mov eax, esp  ;use stack to store a pointer where char goes
 	add eax, 1Ch  ;address is 1C up from the bottom of the stack
-	mov [esp+8], eax;pointer is param 3
-	mov dword [esp+4], scanFormat; fromat is param 2
+	mov [esp+8], eax ;pointer is param 3
+	mov dword [esp+4], scanFormat; format is param 2
 
 	mov edx, 0
 	mov [prevX], edx
@@ -94,6 +106,9 @@ load:
 
 		cmp al, 'M'
 		jz Mario
+
+		cmp al, 'E'
+		jz Exit
 
 		mov edx, [prevX]; increment prevX
 		inc edx
@@ -117,6 +132,13 @@ load:
 		mov [y], edx
 		jmp save
 
+	Exit:
+		mov edx, [prevX]
+		mov [exitX], edx
+		mov edx, [prevY]
+		mov [exitY], edx
+		jmp save
+
 	save:
 		mov [text + esi], al; store in the array
 		inc esi; add one to esi (index in the array)
@@ -133,6 +155,10 @@ load:
 	pop eax
 	ret
 
+;
+getPosition:
+	ret
+
 
 ;*********************************
 ;* Function to update the screen *
@@ -141,6 +167,7 @@ load:
 update:
 	push eax
 	push ebx
+
 	;update the new loc
 	mov eax, [x]
 	mov ebx, [y]
@@ -149,6 +176,7 @@ update:
 
 	add eax, ebx
 	mov byte [text + eax], 'M'
+
 	;update the old loc
 	mov eax, [prevX]
 	mov ebx, [prevY]
