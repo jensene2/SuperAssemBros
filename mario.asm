@@ -13,6 +13,9 @@ y dd 3
 prevX dd 0
 prevY dd 0
 
+score dd 0
+scoreFormat db "You scored: ", 0
+
 rows dd 8
 cols dd 27
 ; uninitialized data is put in the .bss segment
@@ -64,6 +67,16 @@ asm_main:
 		doMove:
 			; Valid move. Resolve the move.
 
+			; Moving subtracts one from the score.
+			; If the score is already at zero, don't subtract.
+			mov eax, [score]
+			cmp eax, 0
+			jz skipScore
+
+			dec [score]
+
+			skipScore:
+
 			; First determine if that's the exit.
 			; Get the ascii value of the new position.
 			push dword [x]
@@ -76,6 +89,13 @@ asm_main:
 
 			; Resolve the move.
 			call update
+
+			; Gold (eax == 71) adds 100 to the score.
+			cmp eax, 71
+			jnz skipScoreGain
+			add [score], 100
+
+			skipScoreGain:
 
 			; The exit is eax == 69
 			cmp eax, 69
@@ -90,6 +110,13 @@ asm_main:
 		call print_string
 		mov eax, text
 		call print_string
+
+		call print_nl
+		mov eax, scoreFormat
+		call print_string
+		mov eax, score
+		call print_int
+		call print_nl
 
 	popa
 	mov     eax, 0            ; return back to C
