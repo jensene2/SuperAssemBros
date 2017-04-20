@@ -42,23 +42,21 @@ asm_main:
 	call update ;update the file with the location
 
 	continue:
+		; Redraw the screen
+		mov eax, clear
+		call print_string
 		mov eax, text
 		call print_string
 
 		call movement
 
-		; Print what is where mario attempted to move to.
-		push dword [x]
-		push dword [y]
-		call getPosition
-		call print_char
-		call print_nl
+		; Check for a valid move. If invalid, loop again.
+		call isValidMove
+		cmp eax, 1
+		jnz continue
 
+		; Valid move. Resolve the move.
 		call update
-
-		; Redraw the screen
-		mov eax, clear
-		call print_string
 
 		; Check if at the exit.
 		mov eax, [prevX]
@@ -160,6 +158,48 @@ load:
 	pop esi	;restore registers
 	pop eax
 	ret
+
+
+; isValidMove sets eax to 1 if it was a valid move, 0 otherwise.
+isValidMove:
+	push ebp
+	mov ebp, esp
+
+	; Get the current character at desired location.
+	push dword [x]
+	push dword [y]
+	call getPosition
+
+	; Clean stack.
+	pop ebx
+	pop ebx
+
+	; Check if the new position is valid.
+	;	Valid options include
+	;		- 32 = Space
+	;		- 71 = 'G'
+
+	cmp eax, 32
+	jz valid
+
+	cmp eax, 71
+	jz valid
+
+	jmp invalid
+
+	valid:
+		mov eax, 1
+		jmp finishValidityCheck
+
+	invalid:
+		mov eax, 0
+		jmp finishValidityCheck
+
+	finishValidityCheck:
+		; Return
+	pop ebp
+	ret
+
 
 ; getPosition returns the character at the position passed in via the stack.
 getPosition:
