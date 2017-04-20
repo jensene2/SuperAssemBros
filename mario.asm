@@ -54,7 +54,7 @@ asm_main:
 		push dword [x]
 		push dword [y]
 		call getPosition
-		push al
+		push eax
 		push oldCharFormat
 		call printf
 		pop eax
