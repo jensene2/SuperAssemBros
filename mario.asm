@@ -166,8 +166,8 @@ getPosition:
 	push ebp
 	mov ebp, esp
 
-	mov eax, [ebp+8] ; X value passed in.
-	mov ebx, [ebp+12] ; Y value passed in.
+	mov eax, [ebp+12] ; X value passed in.
+	mov ebx, [ebp+8] ; Y value passed in.
 	mov edx, 0
 	imul ebx, [cols]
 
