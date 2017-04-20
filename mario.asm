@@ -52,6 +52,7 @@ asm_main:
 		push [y]
 		call getPosition
 		call print_string
+		call print_nl
 
 		call update
 
