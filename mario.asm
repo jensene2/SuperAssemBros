@@ -405,15 +405,46 @@ right:
 	mov eax, [x]
 	inc eax
 	mov [x], eax
+	call handleFalling
 	jmp mDone
 
 left:
 	mov eax, [x]
 	dec eax
 	mov [x], eax
+	call handleFalling
 	jmp mDone
 
 mDone:
 	pop eax
+	popad
+	ret
+
+
+; handleFalling resolves the falling that should occur.
+handleFalling:
+	pushad
+
+	push dword [x]
+	mov ecx, [y]
+	inc ecx
+	push ecx
+	call getPosition
+	pop ebx
+	pop ebx
+
+	push eax
+	call isSolid
+	pop ebx
+
+	cmp eax, 0 ; If nonsolid, fall.
+	jz doFall
+
+	doFall:
+		mov [y], ecx
+		jmp fallingReturn
+
+	fallingReturn:
+		;Return
 	popad
 	ret
