@@ -239,6 +239,9 @@ isValidMove:
 getPosition:
 	push ebp
 	mov ebp, esp
+	push ebx
+	push ecx
+	push edx
 
 	mov eax, [ebp+12] ; X value passed in.
 	mov ebx, [ebp+8] ; Y value passed in.
@@ -253,6 +256,9 @@ getPosition:
 	mov eax, 0
 	mov al, cl
 
+	pop edx
+	pop ecx
+	pop ebx
 	pop ebp
 	ret
 
@@ -369,9 +375,7 @@ up:
 		mov edx, eax
 
 		push eax
-		push ecx
 		call getPosition
-		pop ecx
 		pop ebx
 
 		push eax
