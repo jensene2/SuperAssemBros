@@ -370,7 +370,9 @@ movement:
 up:
 	; Can't jump if already in the air.
 	push dword [x]
-	push dword [y]
+	mov ecx, [y]
+	inc ecx
+	push ecx
 	call getPosition
 	pop ebx
 	pop ebx
