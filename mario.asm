@@ -369,7 +369,9 @@ up:
 		mov edx, eax
 
 		push eax
+		push ecx
 		call getPosition
+		pop ecx
 		pop ebx
 
 		push eax
