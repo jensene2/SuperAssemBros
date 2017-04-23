@@ -213,6 +213,10 @@ isValidMove:
 	pop ebx
 	pop ebx
 
+	; If somehow mario is attempting to move onto mario, it should be invalid.
+	cmp eax, 77
+	jz invalid
+
 	; Check if the new position is valid. Valid means nonsolid.
 	push eax
 	call isSolid
