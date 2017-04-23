@@ -440,6 +440,8 @@ handleFalling:
 	cmp eax, 0 ; If nonsolid, fall.
 	jz doFall
 
+	jmp fallingReturn
+
 	doFall:
 		mov [y], ecx
 		jmp fallingReturn
