@@ -216,7 +216,7 @@ isValidMove:
 	; Check if the new position is valid. Valid means nonsolid.
 	push eax
 	call isSolid
-	pop eax
+	pop ebx
 
 	cmp eax, 1 ; If solid, invalid.
 	jz invalid
