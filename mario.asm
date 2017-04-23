@@ -368,6 +368,20 @@ movement:
 	jmp mDone
 
 up:
+	; Can't jump if already in the air.
+	push dword [x]
+	push dword [y]
+	call getPosition
+	pop ebx
+	pop ebx
+
+	push eax
+	call isSolid
+	pop ebx
+
+	cmp eax, 0 ; If nonsolid, jump to done.
+	jz mDone
+
 	mov ecx, 3
 	mov eax, [x]
 	push eax
