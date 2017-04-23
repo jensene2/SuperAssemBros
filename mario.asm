@@ -213,24 +213,14 @@ isValidMove:
 	pop ebx
 	pop ebx
 
-	; Check if the new position is valid.
-	;	Valid options include
-	;		- 32 = Space
-	;		- 69 = 'E'
-	;		- 71 = 'G'
+	; Check if the new position is valid. Valid means nonsolid.
+	push eax
+	call isSolid
 
-	cmp eax, 32
-	jz valid
+	cmp eax, 1 ; If solid, invalid.
+	jz invalid
 
-	cmp eax, 69
-	jz valid
-
-	cmp eax, 71
-	jz valid
-
-	jmp invalid
-
-	valid:
+	;valid:
 		mov eax, 1
 		jmp finishValidityCheck
 
@@ -265,6 +255,33 @@ getPosition:
 	pop ebp
 	ret
 
+
+; isSolid returns whether the given character is considered solid.
+;   - A return value of 1 is solid, 0 is non-solid.
+isSolid:
+	push ebp
+	mov ebp, esp
+
+	mov eax, [ebp+8]
+
+	cmp eax, 2Ah ; * = Border
+	jz nonSolid
+
+	cmp eax, 42h ; B = Block
+	jz nonSolid
+
+	;solid:
+		mov eax, 1
+		jmp solidityReturn
+
+	nonSolid:
+		mov eax, 0
+		jmp solidityReturn
+
+	solidityReturn:
+		; Return
+	pop ebp
+	ret
 
 ;*********************************
 ;* Function to update the screen *
