@@ -266,17 +266,17 @@ isSolid:
 	mov eax, [ebp+8]
 
 	cmp eax, 2Ah ; * = Border
-	jz nonSolid
+	jz solid
 
 	cmp eax, 42h ; B = Block
-	jz nonSolid
+	jz solid
 
-	;solid:
-		mov eax, 1
+	;nonSolid:
+		mov eax, 0
 		jmp solidityReturn
 
-	nonSolid:
-		mov eax, 0
+	solid:
+		mov eax, 1
 		jmp solidityReturn
 
 	solidityReturn:
