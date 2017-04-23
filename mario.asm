@@ -358,10 +358,32 @@ movement:
 	jmp mDone
 
 up:
-	mov eax, [y]
-	dec eax
-	mov [y], eax
-	jmp mDone
+	mov ecx, 3
+	mov eax, [x]
+	push eax
+
+	jumpLoop:
+		; If the position above is nonsolid, move up.
+		mov eax, [y]
+		dec eax
+		mov edx, eax
+
+		push eax
+		call getPosition
+		pop ebx
+
+		push eax
+		call isSolid
+		pop ebx
+
+		cmp eax, 1
+		jz finishJump
+
+		mov [y], edx
+		loop jumpLoop
+	finishJump:
+		pop eax
+		jmp mDone
 
 down:
 	mov eax, [y]
