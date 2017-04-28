@@ -16,8 +16,8 @@ prevY dd 0
 score dd 0
 scoreFormat db "You scored: ", 0
 
-rows dd 8
-cols dd 27
+rows dd 10
+cols dd 40
 ; uninitialized data is put in the .bss segment
 segment .bss
 text resb 2000
