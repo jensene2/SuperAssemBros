@@ -388,9 +388,9 @@ up:
 	mov eax, [x]
 	push eax
 
-	call update
-
 	jumpLoop:
+		call update
+
 		; If the position above is nonsolid, move up.
 		mov eax, [y]
 		dec eax
