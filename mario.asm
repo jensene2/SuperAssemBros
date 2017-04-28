@@ -327,6 +327,8 @@ update:
 collectGold:
 	pushad
 
+	add dword [score], 100
+
 	mov eax, [x]
 	mov ebx, [y]
 	mov edx, 0
@@ -414,6 +416,7 @@ up:
 		cmp eax, 71 ; If it's gold, collect it.
 		jnz skipCollectGold
 
+		mov [y], edx
 		call collectGold
 
 		skipCollectGold:
