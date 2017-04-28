@@ -324,6 +324,20 @@ update:
 	pop eax
 	ret
 
+collectGold:
+	pushad
+
+	mov eax, [x]
+	mov ebx, [y]
+	mov edx, 0
+	imul ebx, [cols]
+
+	add eax, ebx
+	mov byte [text + eax], ' '
+
+	popad
+	ret
+
 
 ;*********************************
 ;* Function to get mouse movement*
@@ -389,8 +403,6 @@ up:
 	push eax
 
 	jumpLoop:
-		call update
-
 		; If the position above is nonsolid, move up.
 		mov eax, [y]
 		dec eax
@@ -398,6 +410,13 @@ up:
 
 		push eax
 		call getPosition
+
+		cmp eax, 71 ; If it's gold, collect it.
+		jnz skipCollectGold
+
+		call collectGold
+
+		skipCollectGold:
 		pop ebx
 
 		push eax
