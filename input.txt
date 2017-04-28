@@ -1,10 +1,10 @@
-****************************************
-*                                      *
-*        GGG                       EEE *
-*                                    E *
-*       B   B         G      BB      E *
-*                          BBBB      E *
-*     B   B   B          BBBBBB      E *
-*                      BBBBBBBB      E *
-* M                  BBBBBBBBBB      E *
-****************************************
+***************************************
+*                                     *
+*        GGG                      EEE *
+*                                   E *
+*       B   B         G      BB     E *
+*                          BBBB     E *
+*     B   B   B          BBBBBB     E *
+*                      BBBBBBBB     E *
+* M                  BBBBBBBBBB     E *
+***************************************
