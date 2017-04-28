@@ -15,8 +15,9 @@ prevY dd 0
 
 score dd 0
 scoreFormat db "You scored: ", 0
+scoreText db "Score: ", 0
 
-rows dd 10
+rows dd 12
 cols dd 40
 ; uninitialized data is put in the .bss segment
 segment .bss
@@ -48,6 +49,13 @@ asm_main:
 		call print_string
 		mov eax, text
 		call print_string
+
+		; Print the score.
+		mov eax, scoreText
+		call print_string
+		mov eax, [score]
+		call print_int
+		call print_nl
 
 		call movement
 
